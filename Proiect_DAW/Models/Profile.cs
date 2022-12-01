@@ -7,9 +7,12 @@ namespace Proiect_DAW.Models
     {
         [Key, ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
-        public DateTime profile_birthdate { get; set; }
+        [Required(ErrorMessage = "Numele complet este obligatoriu")]
+        public string ProfileFirstName { get; set; }
+        public string ProfileLastName { get; set; }
+        public DateTime ProfileBirthdate { get; set; }
         [Required(ErrorMessage = "Starea profilului este obligatorie")]
-        public bool is_private { get; set; }
+        public bool IsPrivate { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }    
 
     }
