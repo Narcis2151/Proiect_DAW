@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_DAW.Data;
 
@@ -11,9 +12,10 @@ using Proiect_DAW.Data;
 namespace Proiect_DAW.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201163800_Create_Users")]
+    partial class Create_Users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -224,22 +226,6 @@ namespace Proiect_DAW.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.Profile", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("is_private")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("profile_birthdate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.ToTable("Profiles");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -288,23 +274,6 @@ namespace Proiect_DAW.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Proiect_DAW.Models.Profile", b =>
-                {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
-                        .WithOne("Profile")
-                        .HasForeignKey("Proiect_DAW.Models.Profile", "ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Proiect_DAW.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Profile")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618
