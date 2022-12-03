@@ -7,13 +7,12 @@ namespace Proiect_DAW.Models
     {
         [Key, ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }
-        [Required(ErrorMessage = "Numele complet este obligatoriu")]
-        public string ProfileFirstName { get; set; }
-        public string ProfileLastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Username { get; set; }
         public DateTime ProfileBirthdate { get; set; }  
-        [Required(ErrorMessage = "Starea profilului este obligatorie")]
         public bool IsPrivate { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }    
+        public virtual ApplicationUser? ApplicationUser { get; set; }    
 
     }
 }

@@ -1,18 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proiect_DAW.Models
 {
     public class Comment
     {
         [Key]
-        public int CommentId { get; set; }
-        [Required(ErrorMessage = "Conținutul comentariului este obligatoriu")]
-        public string CommentText { get; set; }
-        public DateTime CommentCreateDate { get; set; }
-        public string? ApplicationUserId { get; set; }
-        public virtual ApplicationUser? ApplicationUser { get; set; }
-        public int PostId { get; set; }
-        public virtual Post Post { get; set; }
+        public int Id { get; set; }
+        public string? Text { get; set; }
+        public DateTime CreateDate { get; set; }
+        [ForeignKey("CreateUser")]
+        public string? CreatorUserId { get; set; }
+        public virtual ApplicationUser? CreatorUser { get; set; }
+        public int? PostId { get; set; }
+        public virtual Post? Post { get; set; }
 
     }
 }
