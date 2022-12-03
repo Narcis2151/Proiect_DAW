@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_DAW.Data;
 
@@ -11,9 +12,10 @@ using Proiect_DAW.Data;
 namespace Proiect_DAW.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221201174133_Create_PostsAndComments")]
+    partial class Create_PostsAndComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +23,6 @@ namespace Proiect_DAW.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ApplicationUserGroup", b =>
-                {
-                    b.Property<string>("ApplicationUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GroupsGroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUsersId", "GroupsGroupId");
-
-                    b.HasIndex("GroupsGroupId");
-
-                    b.ToTable("ApplicationUserGroup");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -269,30 +256,6 @@ namespace Proiect_DAW.Data.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.Group", b =>
-                {
-                    b.Property<int>("GroupId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
-
-                    b.Property<DateTime>("GroupCreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GroupDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GroupName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("GroupId");
-
-                    b.ToTable("Groups");
-                });
-
             modelBuilder.Entity("Proiect_DAW.Models.Post", b =>
                 {
                     b.Property<int>("PostId")
@@ -344,21 +307,6 @@ namespace Proiect_DAW.Data.Migrations
                     b.HasKey("ApplicationUserId");
 
                     b.ToTable("Profiles");
-                });
-
-            modelBuilder.Entity("ApplicationUserGroup", b =>
-                {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicationUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proiect_DAW.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
