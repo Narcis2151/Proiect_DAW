@@ -11,5 +11,6 @@ namespace Proiect_DAW.Data
         {   
         }
         public DbSet<Profile> Profiles { get; set; }   
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     }
 }
