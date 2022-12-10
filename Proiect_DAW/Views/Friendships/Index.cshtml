@@ -1,0 +1,20 @@
+﻿<h2>Afisare prietenii</h2>
+<br />
+
+@foreach (Proiect_DAW.Models.Friendship friendships in ViewBag.Frienships)
+{
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title alert-success py-3 px-3 rounded-2">@friendships.Status</h3>
+
+                <div class="d-flex justify-content-between flex-row mt-5">
+
+                
+                    <div><i class="bi bi-globe"></i> @friendships.Requester</div>
+
+                    <div><i class="bi bi-globe"></i> @friendships.Adresee</div>
+
+                </div>
+            </div>
+        </div>
+}
