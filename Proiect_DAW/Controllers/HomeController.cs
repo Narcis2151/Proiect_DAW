@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Proiect_DAW.Data;
 using Proiect_DAW.Models;
 using System.Diagnostics;
 
@@ -7,16 +8,22 @@ namespace Proiect_DAW.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _db;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _db = context;
         }
 
         
-        public IActionResult Index()
+        public IActionResult Home()
         {
-            return View();
+            var post = new Post
+            {
+                Text = "Test"
+            };
+            return View(post);
         }
 
         public IActionResult Privacy()
