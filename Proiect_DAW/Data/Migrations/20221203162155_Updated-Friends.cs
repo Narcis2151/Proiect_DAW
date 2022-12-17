@@ -8,17 +8,6 @@ namespace Proiect_DAW.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_AspNetUsers_ApplicationUserId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_ApplicationUserId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "ApplicationUserId",
-                table: "AspNetUsers");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

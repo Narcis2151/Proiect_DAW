@@ -8,9 +8,7 @@ namespace Proiect_DAW.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "RecipientUserId",
-                table: "MessageRecipient");
+           
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
