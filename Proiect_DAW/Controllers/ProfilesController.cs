@@ -61,7 +61,9 @@ namespace Proiect_DAW.Controllers
             Profile profile = new Profile();
 
             profile.ApplicationUserId = _userManager.GetUserId(User);
+
             return View(profile);
         }
+
     }
 }
