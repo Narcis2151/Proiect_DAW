@@ -46,6 +46,13 @@ namespace Proiect_DAW.Controllers
                                           .Where(prof => prof.ApplicationUserId == id)
                                           .First();
 
+            if (id == _userManager.GetUserId(User))
+            {
+                ViewData["IsOwn"] = "yes";
+            }
+            else
+                ViewData["IsOwn"] = "no";
+
             return View(profile);
         }
 

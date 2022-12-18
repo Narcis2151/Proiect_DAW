@@ -4,16 +4,24 @@
 
     <div class="row card-body rounded-3">
 
-        <div class ="profile-image col-md-3">
-            <img src="~/images/download.png" alt="Profile Picture">
+        <div class="profile-image col-5 col-sm-3">
+            <img src="~/images/download.png" alt="Profile Picture" class="col-10">
         </div>
 
-        <div class="profile-body col-md-4 offset-md-1">
+        <div class="profile-body col-5 offset-2 col-sm-4 offset-sm-1">
 
             <h3 class="card-title pb-2">@Model.FirstName  @Model.LastName</h3>
             <h6 class="card-subtitle pb-3">@Model.Username</h6>
             <p class="card-text">@Model.Description</p>
-            
+                
+        </div>
+
+        <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0" >
+            <a class="btn btn-primary ">Friend</a>
+            <a class="btn btn-success my-sm-2">Message</a>
+            <div class="w-100 d-none d-md-block d-block"></div>
+            @{if(ViewData["IsOwn"]=="yes")
+            {<a class="btn btn-secondary ">Settings</a>}}
         </div>
 
         <div>   
