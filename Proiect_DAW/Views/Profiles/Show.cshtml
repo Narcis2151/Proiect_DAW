@@ -1,13 +1,26 @@
 ﻿@model Proiect_DAW.Models.Profile
 
-<div class="card-body">
+<div class="card container text-center w-75">
 
-    <h3>Username: @Model.Username</h3>
+    <div class="row card-body rounded-3">
 
-    <h4>Name: @Model.FirstName  @Model.LastName</h4>
+        <div class ="profile-image col-md-3">
+            <img src="~/images/download.png" alt="Profile Picture">
+        </div>
 
-    <div>Birthdate: @Model.ProfileBirthdate</div>
+        <div class="profile-body col-md-4 offset-md-1">
 
-    <div>Is private: @Model.IsPrivate</div>
+            <h3 class="card-title pb-2">@Model.FirstName  @Model.LastName</h3>
+            <h6 class="card-subtitle pb-3">@Model.Username</h6>
+            <p class="card-text">@Model.Description</p>
+            
+        </div>
+
+        <div>   
+            
+        </div>
+        
+    </div>
+
 
 </div>

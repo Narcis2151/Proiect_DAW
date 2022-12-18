@@ -45,6 +45,7 @@ namespace Proiect_DAW.Controllers
             Profile profile = db.Profiles.Include("ApplicationUser")
                                           .Where(prof => prof.ApplicationUserId == id)
                                           .First();
+
             return View(profile);
         }
 
