@@ -10,7 +10,6 @@ namespace Proiect_DAW.Models
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? Username { get; set; }
-        public DateTime ProfileBirthdate { get; set; }
         public string? Description { get; set; }
         public bool IsPrivate { get; set; }
         public virtual ApplicationUser? ApplicationUser { get; set; }    

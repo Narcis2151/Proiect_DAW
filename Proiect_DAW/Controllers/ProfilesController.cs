@@ -29,41 +29,55 @@ namespace Proiect_DAW.Controllers
 
             _roleManager = roleManager;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         public IActionResult Show(string id)
         {
             int numar = db.Profiles.Include("ApplicationUser").Where(prof => prof.ApplicationUserId == id).Count();
-            if (numar == 0)
+
+            Profile profile = new();
+            if (TempData.ContainsKey("message_access"))
             {
-                return RedirectToAction("New");
+                ViewBag.Msg = TempData["message_access"].ToString();
             }
 
-            Profile profile = db.Profiles.Include("ApplicationUser")
-                                          .Where(prof => prof.ApplicationUserId == id)
-                                          .First();
+            if (numar != 0)
+            {
+                profile = db.Profiles.Include("ApplicationUser")
+                                              .Where(prof => prof.ApplicationUserId == id)
+                                              .First();
+            }
 
             if (id == _userManager.GetUserId(User))
             {
-                ViewData["IsOwn"] = "yes";
+                if(numar == 0)
+                {
+                    TempData["message_exist"] = "You currently don't have a profile. Create a profile to connect with other users.";
+                    return Redirect("/Identity/Account/Manage");
+                }
+
+                else 
+                {
+                    ViewData["IsOwn"] = "yes";
+                    return View(profile);
+                }
             }
             else
-                ViewData["IsOwn"] = "no";
+            {
+                if(numar == 1)
+                {
+                    ViewData["IsOwn"] = "no";
+                    return View(profile);   
+                }
+                else
+                {
+                    TempData["message_access"] = "The profile you're trying to access does not exist. Redirecting to your profile.";
+                    return Redirect("/Profiles/Show/"+_userManager.GetUserId(User));
+                }
+            }
 
-            return View(profile);
         }
 
-        public IActionResult New() {
-
-            Profile profile = new Profile();
-
-            profile.ApplicationUserId = _userManager.GetUserId(User);
-
-            return View(profile);
-        }
+        
 
     }
 }
