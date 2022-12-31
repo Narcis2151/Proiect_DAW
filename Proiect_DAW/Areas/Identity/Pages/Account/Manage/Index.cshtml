@@ -6,11 +6,7 @@
 }
 
 <h3>@ViewData["Title"]</h3>
-<h2>@ViewData["message_exist"]</h2>
-@if (ViewData["is_new_profile"] == "yes")
-{
-    <h2>New Profile</h2>
-}
+
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">

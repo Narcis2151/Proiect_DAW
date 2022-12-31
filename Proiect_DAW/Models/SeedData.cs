@@ -16,7 +16,7 @@ namespace Proiect_DAW.Models
                     return; 
                 }
                 context.Roles.AddRange(
-                new IdentityRole { Id = "2c5e174e-3b0e-446f-86af483d56fd8210", Name = "Admin", NormalizedName = "Admin".ToUpper() },
+                new IdentityRole { Id = "2c5e174e-3b0e-446f-86af483d56fd8211", Name = "Admin", NormalizedName = "Admin".ToUpper() },
                 new IdentityRole { Id = "2c5e174e-3b0e-446f-86af483d56fd8212", Name = "User", NormalizedName = "User".ToUpper() }
                 );
 
@@ -24,7 +24,7 @@ namespace Proiect_DAW.Models
                 context.Users.AddRange(
                 new ApplicationUser
                 {
-                    Id = "8e445865-a24d-4543-a6c6-9443d048cdf0",
+                    Id = "8e445865-a24d-4543-a6c6-9443d048cdf1",
                     UserName = "admin@test.com",
                     EmailConfirmed = true,
                     NormalizedEmail = "ADMIN@TEST.COM",
@@ -47,8 +47,8 @@ namespace Proiect_DAW.Models
                 context.UserRoles.AddRange(
                 new IdentityUserRole<string>
                 {
-                    RoleId = "2c5e174e-3b0e-446f-86af483d56fd8210",
-                    UserId = "8e445865-a24d-4543-a6c6-9443d048cdf0"
+                    RoleId = "2c5e174e-3b0e-446f-86af483d56fd8211",
+                    UserId = "8e445865-a24d-4543-a6c6-9443d048cdf1"
                 },
                 
                 new IdentityUserRole<string>

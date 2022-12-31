@@ -30,40 +30,40 @@ namespace Proiect_DAW.Controllers
             _roleManager = roleManager;
         }
 
+        //[Authorize(Roles = "User, Admin")] 
         public IActionResult Show(string id)
         {
             int numar = db.Profiles.Include("ApplicationUser").Where(prof => prof.ApplicationUserId == id).Count();
 
-            Profile profile = new();
-            if (TempData.ContainsKey("message_access"))
-            {
-                ViewBag.Msg = TempData["message_access"].ToString();
-            }
-
+            
+            Profile profile = new Profile();
             if (numar != 0)
             {
                 profile = db.Profiles.Include("ApplicationUser")
-                                              .Where(prof => prof.ApplicationUserId == id)
-                                              .First();
+                                            .Where(prof => prof.ApplicationUserId == id)
+                                            .First();
             }
 
             if (id == _userManager.GetUserId(User))
             {
-                if(numar == 0)
+                if(numar != 0)
                 {
-                    TempData["message_exist"] = "You currently don't have a profile. Create a profile to connect with other users.";
-                    return Redirect("/Identity/Account/Manage");
+                    ViewData["IsOwn"] = "yes";
+                    int numar_postari = db.ApplicationUsers.Include("Profile").Include("Posts").Where(user => user.ApplicationUserId == id).Count();
+
+                    return View(profile);
+
+                    
                 }
 
                 else 
                 {
-                    ViewData["IsOwn"] = "yes";
-                    return View(profile);
+                    return Redirect("/Identity/Account/Manage");
                 }
             }
             else
             {
-                if(numar == 1)
+                if(numar != 0)
                 {
                     ViewData["IsOwn"] = "no";
                     return View(profile);   
