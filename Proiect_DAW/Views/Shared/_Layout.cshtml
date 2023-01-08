@@ -17,11 +17,11 @@
             <div class="container-fluid">
                 <a class="navbar-brand btn-lg mx-1 " asp-area="" asp-controller="Posts" asp-action="Index">Home</a>
                 <a class="navbar-brand" asp-area="" asp-controller="Posts" asp-action="Index"><i class="bi bi-house"></i></a>
-                <form class="d-flex w-50" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search for people" aria-label="Search">
+                <form class="d-flex w-50" role="search" method="GET" asp-controller="Profiles" asp-action="Search">
+                    <input class="form-control me-2" type="text" placeholder="Search for people" aria-label="Search" name="id">
                     <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
                 </form>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <button class="navbar-toggler" type="submit" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -28,8 +28,6 @@ namespace Proiect_DAW.Controllers
         }
         public IActionResult Index()
         {
-            var recipients = db.MessageRecipients.Include("Message").Include("UserReceiver");
-            ViewBag.recipients = recipients;
             return View();
         }
     }
