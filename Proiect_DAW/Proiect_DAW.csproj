@@ -24,4 +24,8 @@
     <None Include="wwwroot\images\download.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Posts\" />
+  </ItemGroup>
+
 </Project>
