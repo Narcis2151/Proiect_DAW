@@ -1,0 +1,25 @@
+﻿@model Proiect_DAW.Models.Post
+@{
+    ViewBag.postId = Model.Id;
+}
+<div class="card">
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between flex-row">
+
+            <div> @Model.ApplicationUser.UserName </div>
+
+            <span>@Model.CreateDate</span>
+        </div>
+
+        <hr/>
+
+        <div class="card-text mt-3">@Model.Text</div>
+        
+        <a id="like-button_@Model.Id" class="bi bi-heart d-inline-block"></a><p id="likes_@Model.Id" class="d-inline-block ms-2">@Model.Likes</p>
+
+        @await Html.PartialAsync("_AddCommentPartial", new Proiect_DAW.Models.Comment{PostId = Model.Id})
+
+        @*@await Html.PartialAsync("_PostComments")*@
+    </div>
+</div>

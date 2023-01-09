@@ -1,0 +1,16 @@
+﻿@{
+    var posts = ViewBag.Posts;
+}
+
+<div class="container">
+    @if (posts.Comments.Any())
+    {
+        @foreach (Proiect_DAW.Models.Comment comment in posts.Comments)
+        {
+            <p>@comment.CreateDate</p>
+            <p>@comment.CreatorUser.UserName</p>
+            <p>@comment.Text</p>
+        }
+
+    }
+</div>

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Proiect_DAW.Models
@@ -12,7 +13,8 @@ namespace Proiect_DAW.Models
         [ForeignKey("CreateUser")]
         public string? CreatorUserId { get; set; }
         public virtual ApplicationUser? CreatorUser { get; set; }
-        public int? PostId { get; set; }
+        [ForeignKey("Post")]
+        public int PostId { get; set; }
         public virtual Post? Post { get; set; }
 
     }

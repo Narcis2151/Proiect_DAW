@@ -1,0 +1,13 @@
+﻿@model Proiect_DAW.Models.Comment
+
+@using (Html.BeginForm("_AddCommentPartial", "Posts", FormMethod.Post, new { @class = "form-inline commentForm" }))
+{   <div class="input-group">
+        <div class="form-group mx-sm-3 mb-2">
+            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "sr-only" })
+            @Html.TextBoxFor(model => model.Text, new { @class = "form-control", @placeholder = "Write a comment" })
+            @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.PostId)
+        </div>
+        <button type="submit" class="btn btn-primary mb-2" style="border-radius:5px">Post Comment</button>
+    </div>
+}
