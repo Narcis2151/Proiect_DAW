@@ -1,0 +1,83 @@
+﻿@model Proiect_DAW.Models.Group
+@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+    <br />
+}
+<html>
+<head>
+
+</head>
+<body style="margin-bottom:0px">
+    <div class="container w-100">
+        <div class="row">
+            <div class="col-3">
+                <div class="create-button col-8 col-sm-8 offset-sm-2 offset-2 my-3 my-sm-2 text-center">
+                    <a class="btn btn-primary text-center">Create Group</a>
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="create-button col-8 col-sm-8 offset-sm-2 offset-2 my-3 my-sm-2 text-center">
+                    <h3 class="text-center">Create a group.</h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="row d-flex flex-row justify-content-sm-between">
+            <div class="col-sm-3 col-3" style="height:75vh">
+                <div class="card w-100 my-3 border-1">
+                    <div class="card-body" style="overflow-y: auto">
+                        @foreach (Proiect_DAW.Models.Group groups in ViewBag.Groups)
+                        {
+                            <a class="card my-3 text-black text-decoration-none" asp-controller="Groups" asp-action="Show" asp-route-id="@groups.Id">
+                                <div class="card-body">
+                                    <h5 class="card-subtitle rounded-2 ">@groups.Name</h5>
+                                </div>
+                            </a>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9 col-9 d-flex flex-row" style="height:75vh">
+                @using (Html.BeginForm(actionName: "New", controllerName: "Groups",
+                method: FormMethod.Post))
+                {
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+                    @Html.Label("Name", "Group Name")
+                    <br />
+                    @Html.TextBox("Name", null, new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(g => g.Name , "", new { @class = "text-danger" })
+                    <br />
+
+                    <br />
+
+                    @Html.Label("Description", "Group description")
+                    <br />
+                    @Html.TextArea("Description", null, new { @class = "form-control" })
+
+
+                    <br />
+
+                    <label>Select members</label>
+                    @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.Categ, "Value", "Text"),
+                "Select members", new { @class = "form-control" })
+
+                    @Html.ValidationMessageFor(m => m.CategoryId, null, new { @class = "text-danger" })
+                    <br />
+
+                    <br />
+
+                    <button class="btn btn-success" type="submit">Adauga articol</button>
+
+                }
+
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

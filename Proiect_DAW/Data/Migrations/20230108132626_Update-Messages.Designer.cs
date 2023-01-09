@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_DAW.Data;
 
@@ -11,9 +12,10 @@ using Proiect_DAW.Data;
 namespace Proiect_DAW.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230108132626_Update-Messages")]
+    partial class UpdateMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +23,21 @@ namespace Proiect_DAW.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("ApplicationUserGroup", b =>
+                {
+                    b.Property<string>("ApplicationUsersId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("GroupsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationUsersId", "GroupsId");
+
+                    b.HasIndex("GroupsId");
+
+                    b.ToTable("ApplicationUserGroup");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -327,7 +344,7 @@ namespace Proiect_DAW.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("GroupId")
+                    b.Property<int?>("GroupReceiverId")
                         .HasColumnType("int");
 
                     b.Property<string>("SenderId")
@@ -338,7 +355,7 @@ namespace Proiect_DAW.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupId");
+                    b.HasIndex("GroupReceiverId");
 
                     b.HasIndex("SenderId");
 
@@ -397,6 +414,21 @@ namespace Proiect_DAW.Data.Migrations
                     b.ToTable("Profiles");
                 });
 
+            modelBuilder.Entity("ApplicationUserGroup", b =>
+                {
+                    b.HasOne("Proiect_DAW.Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("ApplicationUsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Proiect_DAW.Models.Group", null)
+                        .WithMany()
+                        .HasForeignKey("GroupsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -451,13 +483,13 @@ namespace Proiect_DAW.Data.Migrations
             modelBuilder.Entity("Proiect_DAW.Models.ApplicationUserGroup", b =>
                 {
                     b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("ApplicationUserGroups")
+                        .WithMany()
                         .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Proiect_DAW.Models.Group", "Group")
-                        .WithMany("ApplicationUserGroups")
+                        .WithMany()
                         .HasForeignKey("GroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -499,15 +531,15 @@ namespace Proiect_DAW.Data.Migrations
 
             modelBuilder.Entity("Proiect_DAW.Models.Message", b =>
                 {
-                    b.HasOne("Proiect_DAW.Models.Group", "Group")
-                        .WithMany("Message")
-                        .HasForeignKey("GroupId");
+                    b.HasOne("Proiect_DAW.Models.Group", "GroupReceiver")
+                        .WithMany("Messages")
+                        .HasForeignKey("GroupReceiverId");
 
                     b.HasOne("Proiect_DAW.Models.ApplicationUser", "Sender")
                         .WithMany("Messages")
                         .HasForeignKey("SenderId");
 
-                    b.Navigation("Group");
+                    b.Navigation("GroupReceiver");
 
                     b.Navigation("Sender");
                 });
@@ -534,8 +566,6 @@ namespace Proiect_DAW.Data.Migrations
 
             modelBuilder.Entity("Proiect_DAW.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("ApplicationUserGroups");
-
                     b.Navigation("Comments");
 
                     b.Navigation("FriendshipsReveived");
@@ -551,9 +581,7 @@ namespace Proiect_DAW.Data.Migrations
 
             modelBuilder.Entity("Proiect_DAW.Models.Group", b =>
                 {
-                    b.Navigation("ApplicationUserGroups");
-
-                    b.Navigation("Message");
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Post", b =>

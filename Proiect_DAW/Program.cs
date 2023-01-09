@@ -45,12 +45,17 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller = Groups}/{action = Show}/{id!}/{mesaj!}");
+
+app.MapControllerRoute(
     name: "friendships",
     pattern: "{controller=Friendships}/{action=SetFriendship}/{status}/{id}");
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Posts}/{action=Index}/{id?}");
+
 
 app.MapRazorPages();
 

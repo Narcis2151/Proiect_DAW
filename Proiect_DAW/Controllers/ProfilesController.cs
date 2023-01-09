@@ -105,7 +105,7 @@ namespace Proiect_DAW.Controllers
         {
             if(_userManager.GetUserId(User) == id) 
             {
-                ViewBag.Butoane = "Propriu";
+                    ViewBag.Butoane = "Propriu";
                 ViewBag.Viz = "Public";
             }
             else 
