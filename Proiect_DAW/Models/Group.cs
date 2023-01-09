@@ -10,8 +10,6 @@ namespace Proiect_DAW.Models
         public string? Description { get; set; }
         public DateTime CreateDate { get; set; }
         public virtual ICollection<ApplicationUser>? ApplicationUsers { get; set; }
-        [InverseProperty("GroupReceiver")]
-        public virtual ICollection<MessageRecipient>? MessageRecipients { get; set; }
 
     }
 }

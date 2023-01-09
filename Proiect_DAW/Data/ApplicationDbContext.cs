@@ -22,7 +22,6 @@ namespace Proiect_DAW.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<ApplicationUserGroup> ApplicationUserGroups { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<MessageRecipient> MessageRecipients { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
 
 

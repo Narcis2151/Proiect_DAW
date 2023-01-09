@@ -20,6 +20,6 @@
 
         @await Html.PartialAsync("_AddCommentPartial", new Proiect_DAW.Models.Comment{PostId = Model.Id})
 
-        @*@await Html.PartialAsync("_PostComments")*@
+        @await Html.PartialAsync("_PostComments", Model)
     </div>
 </div>

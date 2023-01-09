@@ -1,11 +1,12 @@
-﻿@{
-    var posts = ViewBag.Posts;
-}
+﻿
 
 <div class="container">
-    @if (posts.Comments.Any())
+    @{
+        List<Proiect_DAW.Models.Comment> comments = Model.Comments;
+    }
+    @if (@comments.Any())
     {
-        @foreach (Proiect_DAW.Models.Comment comment in posts.Comments)
+        @foreach (Proiect_DAW.Models.Comment comment in Model.Comments)
         {
             <p>@comment.CreateDate</p>
             <p>@comment.CreatorUser.UserName</p>

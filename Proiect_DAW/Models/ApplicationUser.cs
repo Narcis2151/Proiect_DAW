@@ -12,8 +12,6 @@ namespace Proiect_DAW.Models
         public virtual ICollection<Group>? Groups { get; set; }
         [InverseProperty("Sender")]
         public virtual ICollection<Message>? Messages { get; set; }
-        [InverseProperty("UserReceiver")]
-        public virtual ICollection<MessageRecipient>? MessageRecipients { get; set; }
         [InverseProperty("Requester")]
         public virtual ICollection<Friendship>? FriendshipsSent { get; set; }
         [InverseProperty("Adresee")]
