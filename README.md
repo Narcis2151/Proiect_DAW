@@ -1,4 +1,4 @@
 # Proiect_DAW
 Micro social platform using .NET Core MCV.
 
-![Untitled Diagram](https://user-images.githubusercontent.com/114938273/206556869-c3dd32de-614a-45fc-839a-afe7f6a2ecc9.jpg)
+![Untitled Diagram drawio](https://user-images.githubusercontent.com/114938273/211614206-3f7f1beb-f6e2-4bdb-b7fe-c0bdd3dc1361.png)
