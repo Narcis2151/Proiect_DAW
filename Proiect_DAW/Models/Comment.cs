@@ -8,6 +8,7 @@ namespace Proiect_DAW.Models
     {
         [Key]
         public int Id { get; set; }
+        [Required(ErrorMessage = "You can't post an empty message!")]
         public string? Text { get; set; }
         public DateTime CreateDate { get; set; }
         [ForeignKey("CreateUser")]

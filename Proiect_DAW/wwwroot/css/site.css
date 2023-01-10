@@ -24,3 +24,12 @@ body {
 .commentForm{
     width: 50%;
 }
+
+#delete-form{
+    width: fit-content;
+}
+
+#delete-button{
+    position: relative;
+    margin-left: 5px;
+}
