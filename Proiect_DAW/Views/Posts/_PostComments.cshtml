@@ -1,0 +1,37 @@
+﻿<div class="container d-flex flex-column-reverse" style="width:98%">
+    @{
+        List<Proiect_DAW.Models.Comment> comments = Model.Comments;
+    }
+
+    @if (@comments.Any())
+    {
+        @foreach (Proiect_DAW.Models.Comment comment in comments)
+        {
+            <div>
+                @if (comment.CreatorUserId == ViewBag.CurrentUserId || ViewBag.IsAdmin)
+                {
+                    <div class="d-flex justify-content-end flex-row">
+                    @if (comment.CreatorUserId == ViewBag.CurrentUserId)
+                    {
+                            <button class="btn btn-success" style="margin-right: 5px" onclick="editComment(@comment.Id)" id="editC_@comment.Id">Edit</button>
+                    }
+                    <form asp-action="DeleteComment" asp-route-id="@comment.Id" method="post">
+                        <input type="Submit" value="Delete" class="btn btn-danger" />
+                    </form>
+                    </div>
+                }
+                <div class="d-flex justify-content-between flex-row">
+                    <p class="bi bi-person">@comment.CreatorUser.UserName</p>
+                    <p >@comment.CreateDate</p>
+                </div>
+                <form asp-action="EditComment" asp-route-id="@comment.Id" method="post" id="editC-form_@comment.Id" style="display: none">
+                    <textarea class="card-text mt-3 d-block col-md-12" name="text" id="editC-textarea_@comment.Id"></textarea>
+                    <input type="Submit" value="Edit" class="btn btn-success mt-3" />
+                </form>
+                <p id="comment-text_@comment.Id">@comment.Text</p>
+                <hr />
+            </div>
+            <script>hideEditC(@comment.Id)</script>
+        }
+    }
+</div>
