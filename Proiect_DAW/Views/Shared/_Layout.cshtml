@@ -28,13 +28,6 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-1"> 
 
-                        @if (User.IsInRole("Admin"))
-                        {
-
-                            <li class="nav-item ">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index"><i class="bi bi-pen btn-lg mx-4"></i></a>
-                            </li>   
-                        }
                             <li class="nav-item ">
                             <a class="nav-link text-dark" asp-controller="Groups" asp-action="Index"><i class="bi bi-envelope btn-lg mx-4"></i></a>
                             </li>   

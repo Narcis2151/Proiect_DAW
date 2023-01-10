@@ -35,7 +35,7 @@
                                 {
                                     <a class="card my-3 bg-secondary text-black text-decoration-none" asp-controller="Groups" asp-action="Show" asp-route-id="@groups.Id">
                                         <div class="card-body">
-                                            <h5 class="card-subtitle rounded-2 ">@groups.Name</h5>
+                                            <h6 class="card-subtitle rounded-2 ">@groups.Name</h6>
                                         </div>
                                     </a>
                                 }
@@ -44,7 +44,7 @@
                                 {
                                     <a class="card my-3 text-black text-decoration-none" asp-controller="Groups" asp-action="Show" asp-route-id="@groups.Id">
                                         <div class="card-body">
-                                            <h5 class="card-subtitle rounded-2 ">@groups.Name</h5>
+                                            <h6 class="card-subtitle rounded-2 ">@groups.Name</h6>
                                         </div>
                                     </a>
                                 }
@@ -61,14 +61,14 @@
                             if (message.Sender.Id != ViewBag.User)
                             {
                                 <div class="card col-5 bg-secondary mb-2 align-self-start">
-                                    <h5 class="card-header">@message.Sender.Profile.FirstName</h5>
+                                    <h6 class="card-header">@message.Sender.Profile.FirstName</h6>
                                 <h5 class="card-body rounded-2 ">@message.Text</h5>
                                 </div>
                             }
                             else{
                                 <div class="card col-5 bg-primary mb-2 d-flex align-self-end">
                                     <div class="card-header d-flex flex-row justify-content-between">
-                                        <h5 class="h:50 align-self-center col-sm-2">You</h5>
+                                        <h6 class="h:50 align-self-center col-sm-2">You</h6>
                                         <a asp-action="Edit_Message" asp-controller="Groups" asp-route-id="@message.Id" class="text-decoration-none text-black h:50 align-self-center  col-sm-2 offset-sm-3"><i class="bi bi-gear"></i></a>
 
                                         <form class="h:50 align-self-center col-sm-2 offset-sm-3" method="post" action="/Groups/Delete_Message/@message.Id">
