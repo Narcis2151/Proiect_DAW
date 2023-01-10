@@ -49,7 +49,7 @@ namespace Proiect_DAW.Controllers
                 TempData["message"] = "You are not a member of this group!";
                 return RedirectToAction("Index");
             }
-            var grup = db.Groups.Where(grup => grup.Id == id).Include(grup => grup.Message).ThenInclude(msg => msg.Sender).ThenInclude(usr => usr.Profile);
+            var grup = db.Groups.Where(grup => grup.Id == id).Include(grup => grup.Messages).ThenInclude(msg => msg.Sender).ThenInclude(usr => usr.Profile);
             List<ApplicationUser> users = (from ug in db.ApplicationUserGroups
                                     where ug.GroupId == id
                                     select ug.ApplicationUser).ToList();
@@ -65,7 +65,7 @@ namespace Proiect_DAW.Controllers
                 ViewBag.Group = grup.First();
                 ViewBag.User = _userManager.GetUserId(User);
                 ViewBag.Users = users;
-                ViewBag.Messages = grup.First().Message.OrderBy(msg => msg.DateCreated);
+                ViewBag.Messages = grup.First().Messages.OrderBy(msg => msg.DateCreated);
                 ViewBag.Groups = GetGroups();
             }
             return View(grup.First());
@@ -94,7 +94,7 @@ namespace Proiect_DAW.Controllers
 
             else
             {
-                var grup = db.Groups.Where(grup => grup.Id == id).Include(grup => grup.Message).ThenInclude(msg => msg.Sender).ThenInclude(usr => usr.Profile);
+                var grup = db.Groups.Where(grup => grup.Id == id).Include(grup => grup.Messages).ThenInclude(msg => msg.Sender).ThenInclude(usr => usr.Profile);
                 List<ApplicationUser> users = (from ug in db.ApplicationUserGroups
                                                where ug.GroupId == id
                                                select ug.ApplicationUser).ToList();
@@ -103,12 +103,13 @@ namespace Proiect_DAW.Controllers
                 ViewBag.Group = grup.First();
                 ViewBag.User = _userManager.GetUserId(User);
                 ViewBag.Users = users;
-                ViewBag.Messages = grup.First().Message.OrderBy(msg => msg.DateCreated);
+                ViewBag.Messages = grup.First().Messages.OrderBy(msg => msg.DateCreated);
                 ViewBag.Groups = GetGroups();
                 
                 return View(grup.First());
             }
         }
+        [Authorize(Roles = "User,Admin")]
         public IActionResult New()
         {
             var has_profile = db.Profiles.Find(_userManager.GetUserId(User));
@@ -116,9 +117,9 @@ namespace Proiect_DAW.Controllers
             {
                 return RedirectToAction("/Profiles/Show/" + _userManager.GetUserId(User));
             }
-            Group grup = new Group();
-            var fr1 = db.Friendships.Where(fr => fr.Requester.Id == _userManager.GetUserId(User) && fr.Status == "Accepted");
-            var fr2 = db.Friendships.Where(fr => fr.Adresee.Id == _userManager.GetUserId(User) && fr.Status == "Accepted");
+            Intermediar intermediar = new Intermediar();
+            var fr1 = db.Friendships.Where(fr => fr.Requester.Id == _userManager.GetUserId(User) && fr.Status == "Accepted").Include(fr => fr.Adresee);
+            var fr2 = db.Friendships.Where(fr => fr.Adresee.Id == _userManager.GetUserId(User) && fr.Status == "Accepted").Include(fr => fr.Requester);
             List<Profile> profiles = new List<Profile>();
             foreach(Friendship fr in fr1)
             {
@@ -141,22 +142,143 @@ namespace Proiect_DAW.Controllers
             {
                 TempData["message"] = "You cannot create a group without having any friends!";
                 return RedirectToAction("Index");
-
             }
             else
             {
-                List <SelectListItem> selectList = new List<SelectListItem>();
-                foreach(var prof in profiles)
+                intermediar.Users = new Dictionary<string, bool>();
+                foreach (var prof in profiles)
                 {
-                    selectList.Add(new SelectListItem{ Value = (prof.ApplicationUserId), Text = (prof.FirstName + " " + prof.LastName)});
+                    intermediar.Users.Add(prof.ApplicationUserId, false);
+                    ViewData[prof.ApplicationUserId] = prof.FirstName + " " + prof.LastName;
                 }
-                ViewBag.List = selectList;
+                ViewBag.List = intermediar.Users;
                 ViewBag.Groups = GetGroups();
-                
             }
-            return View(grup);
+
+            return View(intermediar);
         }
 
+        [Authorize(Roles = "User,Admin")]
+        [HttpPost]
+        public IActionResult New(Intermediar intermediar)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["message"] = "Group has been created.";
+                Group group = new Group
+                {
+                    Name = intermediar.GroupName,
+                    Description = intermediar.Description,
+                    CreateDate = DateTime.Now
+                };
+                db.Groups.Add(group);
+                db.SaveChanges();
+
+                ApplicationUserGroup aug = new ApplicationUserGroup();
+                aug.ApplicationUserId = _userManager.GetUserId(User);
+                aug.GroupId = group.Id;
+                db.ApplicationUserGroups.Add(aug);
+
+                foreach (KeyValuePair<string, bool> kvp in intermediar.Users)
+                {
+                    if (kvp.Value == true)
+                    {
+                        var usr = db.ApplicationUsers.Find(kvp.Key);
+                        aug = new ApplicationUserGroup();
+                        aug.ApplicationUserId = usr.Id;
+                        aug.GroupId = group.Id;
+                        db.ApplicationUserGroups.Add(aug);
+                    }
+                }
+                db.SaveChanges();
+
+
+                return RedirectToAction("Index");
+            }
+            else 
+            {
+                intermediar = new Intermediar();
+                var fr1 = db.Friendships.Where(fr => fr.Requester.Id == _userManager.GetUserId(User) && fr.Status == "Accepted").Include(fr => fr.Adresee);
+                var fr2 = db.Friendships.Where(fr => fr.Adresee.Id == _userManager.GetUserId(User) && fr.Status == "Accepted").Include(fr => fr.Requester);
+                List<Profile> profiles = new List<Profile>();
+                foreach (Friendship fr in fr1)
+                {
+                    Profile prof = db.Profiles.Find(fr.Adresee.Id);
+                    if (prof != null)
+                    {
+                        profiles.Add(prof);
+                    }
+                }
+                foreach (Friendship fr in fr2)
+                {
+                    Profile prof = db.Profiles.Find(fr.Requester.Id);
+                    if (prof != null)
+                    {
+                        profiles.Add(prof);
+                    }
+                }
+
+                if (profiles.Count() == 0)
+                {
+                    TempData["message"] = "You cannot create a group without having any friends!";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    intermediar.Users = new Dictionary<string, bool>();
+                    foreach (var prof in profiles)
+                    {
+                        intermediar.Users.Add(prof.ApplicationUserId, false);
+                        ViewData[prof.ApplicationUserId] = prof.FirstName + " " + prof.LastName;
+                    }
+                    ViewBag.List = intermediar.Users;
+                    ViewBag.Groups = GetGroups();
+                }
+
+                return View(intermediar);
+            }
+
+        }
+
+        [Authorize(Roles = "User,Admin")]
+        public IActionResult Edit_Message(int id)
+        {
+            Message message = db.Messages.Find(id);
+            if (message != null)
+            {
+
+                if (message.Sender.Id == _userManager.GetUserId(User))
+                {
+                    Group grup = db.Groups.Find(message.Group.Id);
+                    if (grup != null)
+                    {
+
+                        ViewBag.Group = grup;
+                        ViewBag.Groups = GetGroups();
+                        return View(message);
+                    }
+
+                    else
+                    {
+                        TempData["message"] = "This message is not part of a group!";
+                        return RedirectToAction("Index");
+                    }
+
+                }
+
+                else
+                {
+                    TempData["message"] = "You cannot edit another user's messages!";
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                TempData["message"] = "The message you're trying to edit does not exist!";
+                return RedirectToAction("Index");
+            }
+
+        }
         private List<Group> GetGroups() 
         { 
             List<Group> groups = new List<Group>();
@@ -173,6 +295,5 @@ namespace Proiect_DAW.Controllers
             return groups;
         }
 
-        private <
     }
 }

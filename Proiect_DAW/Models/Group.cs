@@ -13,7 +13,7 @@ namespace Proiect_DAW.Models
         public DateTime CreateDate { get; set; }
         public virtual ICollection<ApplicationUserGroup>? ApplicationUserGroups { get; set; }
         [InverseProperty("Group")]
-        public virtual ICollection<Message>? Message { get; set; }
+        public virtual ICollection<Message>? Messages { get; set; }
 
     }
 }
