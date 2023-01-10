@@ -67,9 +67,16 @@
                             }
                             else{
                                 <div class="card col-5 bg-primary mb-2 d-flex align-self-end">
-                                    <div class="card-header ">
-                                        <h5>You</h5>
-                                        <a asp-action="Edit" asp-all-route-data="new {id=message.Id}"><i class="bi bi-gear"></i></a>
+                                    <div class="card-header d-flex flex-row justify-content-between">
+                                        <h5 class="h:50 align-self-center col-sm-2">You</h5>
+                                        <a asp-action="Edit_Message" asp-controller="Groups" asp-route-id="@message.Id" class="text-decoration-none text-black h:50 align-self-center  col-sm-2 offset-sm-3"><i class="bi bi-gear"></i></a>
+
+                                        <form class="h:50 align-self-center col-sm-2 offset-sm-3" method="post" action="/Groups/Delete_Message/@message.Id">
+                                            <button class="btn bi bi-x" type="submit">
+                                                     
+                                                </button>
+                                            </form>
+
                                     </div>
                                 <h5 class="card-body rounded-2 ">@message.Text</h5>
                                 </div>

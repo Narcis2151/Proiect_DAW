@@ -243,7 +243,7 @@ namespace Proiect_DAW.Controllers
         [Authorize(Roles = "User,Admin")]
         public IActionResult Edit_Message(int id)
         {
-            Message message = db.Messages.Find(id);
+            Message? message = db.Messages.Where(msg => msg.Id == id).Include(msg => msg.Sender).Include(msg => msg.Group).First();
             if (message != null)
             {
 
@@ -278,6 +278,54 @@ namespace Proiect_DAW.Controllers
                 return RedirectToAction("Index");
             }
 
+        }
+        [Authorize(Roles = "User,Admin")]
+        [HttpPost]
+        public IActionResult Edit_Message(int id, Message request_mes)
+        {
+            Message? message = db.Messages.Where(msg => msg.Id == id).Include(msg => msg.Sender).Include(msg => msg.Group).First();
+
+            if (message.Sender.Id == _userManager.GetUserId(User))
+            {
+                if (ModelState.IsValid)
+                {
+                    message.Text = request_mes.Text;
+
+                    db.SaveChanges();
+                    TempData["message"] = message.Text;
+
+                    return Redirect("/Groups/Show/" + message.Group.Id);
+                }
+                else
+                {
+                    return View(request_mes);
+                }
+            }
+            else
+            {
+                TempData["message"] = "You cannot edit this!";
+                return RedirectToAction("Index", "Groups");
+            }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "User,Admin")]
+        public IActionResult Delete_Message(int id)
+        {   
+            Message message = db.Messages.Where(msg => msg.Id == id).Include(msg => msg.Sender).Include(msg => msg.Group).First();
+
+            if (message.Sender.Id == _userManager.GetUserId(User))
+            {
+                db.Messages.Remove(message);
+                db.SaveChanges();   
+                return Redirect("/Groups/Show/" + message.Group.Id);
+            }
+
+            else
+            {
+                TempData["message"] = "You cannot delete this!";
+                return RedirectToAction("Index", "Groups");
+            }
         }
         private List<Group> GetGroups() 
         { 

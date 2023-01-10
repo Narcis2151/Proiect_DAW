@@ -55,31 +55,31 @@
                     </div>
                 </div>
             </div>
-            <div class="col-sm-9 col-9 d-flex flex-row" style="height:75vh">
-                <div class="card w-100 my-3 border-4">
-                    <div class="card-body d-flex flex-column" style="overflow-y: scroll">
-                        @using (Html.BeginForm(controllerName: "Groups", actionName: "Edit_Message",
-                        method: FormMethod.Post, routeValues: new { id = Model.Id }))
+            <div class="col-sm-6 col-6 offset-3 offset-sm-3 d-flex flex-column justify-content-center align-self-center" style="height:75vh">
+                @using (Html.BeginForm(controllerName: "Groups", actionName: "Edit_Message",
+                method: FormMethod.Post, routeValues: new { id = Model.Id }))
 
-                        {
-                            @Html.Label("Text", "Message content")
+                {   <h5>
+                    @Html.Label("Text", "Message content")
+                    </h5>
 
-                            <br />
+                    <br />
 
-                            @Html.Editor("Text", new { @class = "form-control" })
-                            <br />
+                    @Html.Editor("Text", new { @class = "form-control" })
+                    <br />
 
-                            @Html.ValidationMessage("Text", null, new { @class = "text-danger" })
+                    @Html.ValidationMessage("Text", null, new { @class = "text-danger" })
 
-                            <br />
+                    <br />
 
-                            <br />
+                    <br />
 
-                            <button class="btn  btn-primary" type="submit">Edit message</button>
+                    <button class="btn  btn-primary align-self-sm-center" type="submit">Edit message</button>
+                    
 
-                        }
-                    </div>
-                </div>
+                }
+               
+                 
 
             </div>
         </div>
