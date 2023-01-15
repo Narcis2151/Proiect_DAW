@@ -1,11 +1,11 @@
-﻿@if (ViewBag.Message != null)
+﻿@model Proiect_DAW.Models.Profile
+@if (ViewBag.Message != null)
 {
     <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
     <br />
 }
-<h2>Your pending friendship requests: </h2>
+<h2>@Model.FirstName's friends who want to connect with you: </h2>
 <br />
-
 @foreach (Proiect_DAW.Models.Profile profile in ViewBag.PendingFriends)
 {
     <br />
@@ -25,7 +25,7 @@
 
             </div>
 
-            <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
+             <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
                 <form method="post" action="/Friendships/SetFriendship/Accept/@profile.ApplicationUserId">
 
                     <button class="btn btn-success" type="submit">Accept</button>
@@ -46,9 +46,46 @@
     </div>
 }
 
-<h2>Your sent friendship requests: </h2>
+<h2>Your common friends: </h2>
 <br />
 
+@foreach (Proiect_DAW.Models.Profile profile in ViewBag.CommonFriends)
+{
+    <br />
+    <div class="card container text-center w-50">
+
+        <div class="row card-body rounded-3">
+
+            <div class="profile-image col-5 col-sm-3">
+                <img src="~/images/download.png" alt="Profile Picture" class="col-10">
+            </div>
+
+            <div class="profile-body col-5 offset-2 col-sm-4 offset-sm-1">
+
+                <h3 class="card-title pb-2">@profile.FirstName  @profile.LastName</h3>
+                <h6 class="card-subtitle pb-3">@profile.Username</h6>
+                <p class="card-text">@profile.Description</p>
+
+            </div>
+
+             <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
+                <form method="post" action="/Friendships/SetFriendship/Remove/@profile.ApplicationUserId">
+
+                    <button class="btn btn-danger" type="submit">Unfriend</button>
+
+                </form>
+                <div class="w-100 d-none d-md-block d-block"></div>
+                <a class="btn btn-secondary my-sm-2" asp-controller="Profiles" asp-action="Show" asp-route-id="@profile.ApplicationUserId">Profile</a>
+            </div>
+
+        </div>
+
+
+    </div>
+
+}
+<h2>@Model.FirstName's friends who you want to connect with: </h2>
+<br />
 @foreach (Proiect_DAW.Models.Profile profile in ViewBag.SentFriends)
 {
     <br />
@@ -68,8 +105,8 @@
 
             </div>
 
-            <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
-                 <form method="post" action="/Friendships/SetFriendship/Unsend/@profile.ApplicationUserId">
+             <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
+                <form method="post" action="/Friendships/SetFriendship/Unsend/@profile.ApplicationUserId">
 
                     <button class="btn btn-danger" type="submit">Unsend</button>
 
@@ -84,9 +121,8 @@
     </div>
 
 }
-<h2>Your friends: </h2>
+<h2>@Model.FirstName's other friends: </h2>
 <br />
-
 @foreach (Proiect_DAW.Models.Profile profile in ViewBag.Friends)
 {
     <br />
@@ -107,9 +143,9 @@
             </div>
 
             <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
-                <form method="post" action="/Friendships/SetFriendship/Remove/@profile.ApplicationUserId">
+                <form method="post" action="/Friendships/SetFriendship/Send/@profile.ApplicationUserId">
 
-                    <button class="btn btn-danger" type="submit">Unfriend</button>
+                    <button class="btn btn-success" type="submit">Add</button>
 
                 </form>
                 <div class="w-100 d-none d-md-block d-block"></div>
@@ -122,3 +158,4 @@
     </div>
 
 }
+

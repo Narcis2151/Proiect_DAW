@@ -1,0 +1,42 @@
+﻿@model Proiect_DAW.Models.Post
+<div class="card">
+    <div class="card-body">
+
+        @if (Model.ApplicationUserId == ViewBag.CurrentUserId || ViewBag.IsAdmin)
+        {
+            <div class="d-flex justify-content-end flex-row">
+                @if (Model.ApplicationUserId == ViewBag.CurrentUserId)
+                {
+                    <button class="btn btn-success" onclick="editPost(@Model.Id)" id="edit_@Model.Id">Edit</button>
+                }
+                <form asp-action="DeletePost" asp-route-id="@Model.Id" method="post" id="delete-form">
+                    <input type="Submit" value="Delete" class="btn btn-danger" id="delete-button" />
+                </form>
+            </div>
+        }
+
+        <div class="d-flex justify-content-between flex-row">
+
+            <div class="bi bi-person"> @Model.ApplicationUser.UserName </div>
+
+            <span >@Model.CreateDate</span>
+        </div>
+
+        <hr/>
+
+        <form asp-action="EditPost" asp-route-id="@Model.Id" method="post" id="edit-form_@Model.Id" style="display: none">
+            <textarea class="card-text mt-3 d-block col-md-12" name="text" id="edit-textarea_@Model.Id"></textarea>
+            <input type="Submit" value="Edit" class="btn btn-success mt-3" />
+        </form>
+
+        <div class="card-text mt-3" id="post-text_@Model.Id">@Model.Text</div>
+        
+        <a id="like-button_@Model.Id" class="bi bi-heart d-inline-block"></a><p id="likes_@Model.Id" class="d-inline-block ms-2">@Model.Likes</p>
+
+        @await Html.PartialAsync("_AddCommentPartial", new Proiect_DAW.Models.Comment{PostId = Model.Id})
+
+        <br />
+
+        @await Html.PartialAsync("_PostComments", Model)
+    </div>
+</div>

@@ -1,0 +1,11 @@
+﻿@model Proiect_DAW.Models.Post
+
+@using (Html.BeginForm("_CreatePostPartial", "Posts", FormMethod.Post, new { @class = "form-inline" }))
+{
+        <div class="form-group mx-sm-3 mb-2">
+        @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "sr-only" })
+        @Html.TextAreaFor(model => model.Text, new { @class = "form-control", @placeholder = "Enter post text" })
+        @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Create Post</button>
+}

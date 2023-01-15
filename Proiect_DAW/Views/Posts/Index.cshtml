@@ -1,21 +1,48 @@
-﻿<h2>Afisare postari</h2>
-<br />
+﻿<h3>Create a post</h3>
+@await Html.PartialAsync("_CreatePostPartial")
 
+<br />
+<h2>Recent posts</h2>
 @foreach (Proiect_DAW.Models.Post posts in ViewBag.Posts)
 {
-    <div class="card">
-        <div class="card-body">
-            <h3 class="card-title alert-success py-3 px-3 rounded-2">@posts.Id</h3>
-
-            <div class="card-text">@posts.Text</div>
-
-            <div class="d-flex justify-content-between flex-row mt-5">
-
-                <div><i class="bi bi-globe"></i> @posts.ApplicationUser.UserName</div>
-
-                <span class="alert-success">@posts.CreateDate</span>
-
-            </div>
-        </div>
-    </div>
+    await Html.RenderPartialAsync("_PostPartial", posts);
+    <text><br /></text>
 }
+
+<script>
+    function like(id){
+        let likeButton = document.getElementById('like-button_' + id);
+        let likeCounter = document.getElementById('likes_' + id);
+        likeButton.addEventListener('click', function () {
+            if (likeButton.classList.contains('bi-heart-fill')) {
+                likeButton.classList.remove('bi-heart-fill');
+                likeButton.classList.add('bi-heart');
+                likeCounter.textContent = Number(likeCounter.textContent) - 1;
+            } else {
+                likeButton.classList.remove('bi-heart');
+                likeButton.classList.add('bi-heart-fill');
+                likeCounter.textContent = Number(likeCounter.textContent) + 1;
+            }
+        });
+    }
+
+    function editPost(id) {
+        $("#edit_" + id).hide();
+        $("#edit-textarea_" + id).text($("#post-text_" + id).text());
+        $("#post-text_" + id).hide();
+        $("#edit-form_" + id).show();
+    }
+
+    function editComment(id) {
+        $("#editC_" + id).hide();
+        $("#editC-textarea_" + id).text($("#comment-text_" + id).text());
+        $("#comment-text_" + id).hide();
+        $("#editC-form_" + id).show();
+    }
+
+    @foreach (Proiect_DAW.Models.Post posts in ViewBag.Posts)
+{
+    <text>like(@posts.Id);</text>
+    <text>hideEdit(@posts.Id);</text>
+}
+</script>

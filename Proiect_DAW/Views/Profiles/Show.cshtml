@@ -1,0 +1,151 @@
+﻿@model Proiect_DAW.Models.Profile
+@if (ViewBag.Msg != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Msg</h2>
+    <br />
+}
+<div class="card container text-center w-75">
+
+    <div class="row card-body rounded-3">
+
+        <div class="profile-image col-5 col-sm-3">
+            <img src="~/images/download.png" alt="Profile Picture" class="col-10">
+        </div>
+
+        <div class="profile-body col-5 offset-2 col-sm-4 offset-sm-1">
+
+            <h3 class="card-title pb-2">@Model.FirstName  @Model.LastName</h3>
+            <h6 class="card-subtitle pb-3">@Model.Username</h6>
+            <p class="card-text">@Model.Description</p>
+                
+        </div>
+
+        <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0" >
+            @{if(ViewBag.Butoane == "Propriu")    
+                {
+                    <a class="btn btn-primary " asp-controller="Friendships" asp-action="Index" asp-route-id="@Model.ApplicationUserId">Your friends</a>
+                    <a class="btn btn-secondary my-sm-2" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
+                }
+                else
+                {
+                    if(ViewBag.Butoane == "Prieten")
+                    {
+                        <form method="post" action="/Friendships/SetFriendship/Remove/@Model.ApplicationUserId">
+
+                            <button class="btn btn-danger" type="submit">Unfriend</button>
+
+                        </form>
+                        <a class="btn btn-secondary my-sm-2" asp-controller="Friendships" asp-action="Show" asp-route-id="@Model.ApplicationUserId">@Model.FirstName's friends</a>
+                        
+                    }
+                    else if (ViewBag.Butoane == "Trimis")
+                    {
+                        <form method="post" action="/Friendships/SetFriendship/Unsend/@Model.ApplicationUserId">
+
+                            <button class="btn btn-danger" type="submit">Unsend</button>
+
+                        </form>
+                        if (ViewBag.Viz == "Public")
+                        {
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Friendships" asp-action="Show" asp-route-id="@Model.ApplicationUserId">@Model.FirstName's friends</a>
+
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary my-sm-2 disabled" role="button" aria-disabled="true">@Model.FirstName's friends</a>
+                        }
+
+                    }
+                    else if (ViewBag.Butoane == "Primit")
+                    {
+                        <form method="post" action="/Friendships/SetFriendship/Accept/@Model.ApplicationUserId">
+
+                        <button class="btn btn-success" type="submit">Accept</button>
+
+                        </form>
+                        <form method="post" action="/Friendships/SetFriendship/Decline/@Model.ApplicationUserId">
+
+                            <button class="btn btn-danger my-sm-2" type="submit">Decline</button>
+
+                        </form>
+                        <div class="w-100 d-none d-md-block d-block"></div>
+                        if (ViewBag.Viz == "Public")
+                        {
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Friendships" asp-action="Show" asp-route-id="@Model.ApplicationUserId">@Model.FirstName's friends</a>
+
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary my-sm-2 disabled" role="button" aria-disabled="true">@Model.FirstName's friends</a>
+                        }
+
+                    }
+                    else if (ViewBag.Butoane == "Nimic")
+                    {
+                        <form method="post" action="/Friendships/SetFriendship/Send/@Model.ApplicationUserId">
+
+                            <button class="btn btn-secondary" type="submit">Add</button>
+
+                        </form>
+                        if (ViewBag.Viz == "Public")
+                        {
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Friendships" asp-action="Show" asp-route-id="@Model.ApplicationUserId">@Model.FirstName's friends</a>
+
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary my-sm-2 disabled" role="button" aria-disabled="true">@Model.FirstName's friends</a>
+                        }
+
+                    }
+
+              }
+            }
+        </div>
+
+    </div>
+
+
+</div>
+
+<br />
+@{
+    if(ViewBag.Viz == "Public")
+    {   if (Model.ApplicationUser.Posts.Count() == 0)
+        {
+            <h2>@Model.FirstName has no posts currently.</h2>
+        }
+        else
+        {
+            if (ViewBag.Butoane == "Propriu")
+            {
+                <h2>Showing your posts.</h2>
+            }
+            else
+
+            {
+                <h2>Showing @Model.FirstName's posts.</h2>
+            }
+        }
+        
+        @foreach (Proiect_DAW.Models.Post posts in Model.ApplicationUser.Posts)
+        {
+            <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title alert-success py-3 px-3 rounded-2">@posts.Text</h3>
+
+
+                        <div class="d-flex justify-content-between flex-row mt-5">
+
+                            <div><i class="bi bi-person"></i> @posts.ApplicationUser.UserName</div>
+
+                            <span class="alert-success">@posts.CreateDate</span>
+
+                        </div>
+                    </div>
+            </div>
+        }
+    }
+    else
+        {<h2>Become friends to view @Model.FirstName's posts.</h2>}
+}

@@ -1,0 +1,88 @@
+﻿@if (ViewBag.Message != null)
+{
+    <h2 class="alert-success p-3 rounded-3 text-center mb-5">@ViewBag.Message</h2>
+    <br />
+}
+<h2>Your search results: </h2>
+<br />
+
+@foreach (Proiect_DAW.Models.Profile profile in ViewBag.Profiles)
+{
+    <br />
+    <div class="card container text-center w-50">
+
+        <div class="row card-body rounded-3">
+
+            <div class="profile-image col-5 col-sm-3">
+                <img src="~/images/download.png" alt="Profile Picture" class="col-10">
+            </div>
+
+            <div class="profile-body col-5 offset-2 col-sm-4 offset-sm-1">
+
+                <h3 class="card-title pb-2">@profile.FirstName  @profile.LastName</h3>
+                <h6 class="card-subtitle pb-3">@profile.Username</h6>
+                <p class="card-text">@profile.Description</p>
+
+            </div>
+
+            <div class="profile-buttons col-12 col-sm-3 offset-sm-1 mt-3 mt-sm-0">
+                @{
+                    if (ViewData[profile.ApplicationUserId] == "Propriu")
+                    {
+                    <a class="btn btn-secondary my-sm-2" asp-area="Identity" asp-page="/Account/Manage/Index">Settings</a>
+                    }
+                    else
+                    {
+                        if (ViewData[profile.ApplicationUserId] == "Prieten")
+                        {
+                            <form method="post" action="/Friendships/SetFriendship/Remove/@profile.ApplicationUserId">
+
+                                <button class="btn btn-danger" type="submit">Unfriend</button>
+
+                            </form>
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Profiles" asp-action="Show" asp-route-id="@profile.ApplicationUserId">Profile</a>
+                        }
+
+                        else if (ViewData[profile.ApplicationUserId] == "Trimis")
+                        {
+                            <form method="post" action="/Friendships/SetFriendship/Unsend/@profile.ApplicationUserId">
+
+                                <button class="btn btn-danger" type="submit">Unsend</button>
+
+                            </form>
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Profiles" asp-action="Show" asp-route-id="@profile.ApplicationUserId">Profile</a>
+                        }
+                        else if (ViewData[profile.ApplicationUserId] == "Primit")
+                        {
+                            <form method="post" action="/Friendships/SetFriendship/Accept/@profile.ApplicationUserId">
+
+                                <button class="btn btn-success" type="submit">Accept</button>
+
+                            </form>
+                            <form method="post" action="/Friendships/SetFriendship/Decline/@profile.ApplicationUserId">
+
+                                <button class="btn btn-danger my-sm-2" type="submit">Decline</button>
+
+                            </form>
+                            <div class="w-100 d-none d-md-block d-block"></div>
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Profiles" asp-action="Show" asp-route-id="@profile.ApplicationUserId">Profile</a>
+                        }
+                        else
+                        {
+                            <form method="post" action="/Friendships/SetFriendship/Send/@profile.ApplicationUserId">
+
+                                <button class="btn btn-success" type="submit">Add</button>
+
+                            </form>
+                            <a class="btn btn-secondary my-sm-2" asp-controller="Profiles" asp-action="Show" asp-route-id="@profile.ApplicationUserId">Profile</a>
+                        }
+                    }
+                }
+            </div>
+
+        </div>
+
+
+    </div>
+    <br />  
+}

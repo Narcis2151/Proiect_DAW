@@ -3,41 +3,24 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_DAW.Data;
 
 #nullable disable
 
-namespace Proiect_DAW.Data.Migrations
+namespace Proiect_DAW.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221203182947_Update_Friendships")]
-    partial class Update_Friendships
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.10")
+                .HasAnnotation("ProductVersion", "6.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ApplicationUserGroup", b =>
-                {
-                    b.Property<string>("ApplicationUsersId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("GroupsGroupId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ApplicationUsersId", "GroupsGroupId");
-
-                    b.HasIndex("GroupsGroupId");
-
-                    b.ToTable("ApplicationUserGroup");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -241,30 +224,45 @@ namespace Proiect_DAW.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.Comment", b =>
+            modelBuilder.Entity("Proiect_DAW.Models.ApplicationUserGroup", b =>
                 {
-                    b.Property<int>("CommentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
-
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("CommentCreateDate")
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ApplicationUserId", "GroupId");
+
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("ApplicationUserGroups");
+                });
+
+            modelBuilder.Entity("Proiect_DAW.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CommentText")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("CreatorUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("PostId")
                         .HasColumnType("int");
 
-                    b.HasKey("CommentId");
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorUserId");
 
                     b.HasIndex("PostId");
 
@@ -279,10 +277,10 @@ namespace Proiect_DAW.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("AdreseesId")
+                    b.Property<string>("AdreseeId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("RequestersId")
+                    b.Property<string>("RequesterId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Status")
@@ -290,32 +288,32 @@ namespace Proiect_DAW.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdreseesId");
+                    b.HasIndex("AdreseeId");
 
-                    b.HasIndex("RequestersId");
+                    b.HasIndex("RequesterId");
 
-                    b.ToTable("Friendship");
+                    b.ToTable("Friendships");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Group", b =>
                 {
-                    b.Property<int>("GroupId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GroupId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime?>("GroupCreateDate")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GroupDescription")
+                    b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GroupName")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("GroupId");
+                    b.HasKey("Id");
 
                     b.ToTable("Groups");
                 });
@@ -328,23 +326,29 @@ namespace Proiect_DAW.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("GroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SenderId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Text")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.MessageRecipient", b =>
+            modelBuilder.Entity("Proiect_DAW.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -355,46 +359,17 @@ namespace Proiect_DAW.Data.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("GroupId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MessageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("GroupId");
-
-                    b.HasIndex("MessageId");
-
-                    b.ToTable("MessageRecipient");
-                });
-
-            modelBuilder.Entity("Proiect_DAW.Models.Post", b =>
-                {
-                    b.Property<int>("PostId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PostId"), 1L, 1);
-
-                    b.Property<string>("ApplicationUserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("PostCreateDate")
+                    b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostLikes")
+                    b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("PostText")
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("PostId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
@@ -406,38 +381,24 @@ namespace Proiect_DAW.Data.Migrations
                     b.Property<string>("ApplicationUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime>("ProfileBirthdate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ProfileFirstName")
-                        .IsRequired()
+                    b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProfileLastName")
-                        .IsRequired()
+                    b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ApplicationUserId");
 
                     b.ToTable("Profiles");
-                });
-
-            modelBuilder.Entity("ApplicationUserGroup", b =>
-                {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", null)
-                        .WithMany()
-                        .HasForeignKey("ApplicationUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Proiect_DAW.Models.Group", null)
-                        .WithMany()
-                        .HasForeignKey("GroupsGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -491,11 +452,30 @@ namespace Proiect_DAW.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.Comment", b =>
+            modelBuilder.Entity("Proiect_DAW.Models.ApplicationUserGroup", b =>
                 {
                     b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("ApplicationUserGroups")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Proiect_DAW.Models.Group", "Group")
+                        .WithMany("ApplicationUserGroups")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("Proiect_DAW.Models.Comment", b =>
+                {
+                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "CreatorUser")
                         .WithMany("Comments")
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("CreatorUserId");
 
                     b.HasOne("Proiect_DAW.Models.Post", "Post")
                         .WithMany("Comments")
@@ -503,63 +483,46 @@ namespace Proiect_DAW.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ApplicationUser");
+                    b.Navigation("CreatorUser");
 
                     b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Friendship", b =>
                 {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "Adresees")
+                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "Adresee")
                         .WithMany("FriendshipsReveived")
-                        .HasForeignKey("AdreseesId");
+                        .HasForeignKey("AdreseeId");
 
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "Requesters")
+                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "Requester")
                         .WithMany("FriendshipsSent")
-                        .HasForeignKey("RequestersId");
+                        .HasForeignKey("RequesterId");
 
-                    b.Navigation("Adresees");
+                    b.Navigation("Adresee");
 
-                    b.Navigation("Requesters");
+                    b.Navigation("Requester");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Message", b =>
                 {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("Messages")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.Navigation("ApplicationUser");
-                });
-
-            modelBuilder.Entity("Proiect_DAW.Models.MessageRecipient", b =>
-                {
-                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("MessageRecipients")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("Proiect_DAW.Models.Group", "Group")
-                        .WithMany()
+                        .WithMany("Messages")
                         .HasForeignKey("GroupId");
 
-                    b.HasOne("Proiect_DAW.Models.Message", "Message")
-                        .WithMany("MessageRecipients")
-                        .HasForeignKey("MessageId");
-
-                    b.Navigation("ApplicationUser");
+                    b.HasOne("Proiect_DAW.Models.ApplicationUser", "Sender")
+                        .WithMany("Messages")
+                        .HasForeignKey("SenderId");
 
                     b.Navigation("Group");
 
-                    b.Navigation("Message");
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Post", b =>
                 {
                     b.HasOne("Proiect_DAW.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Posts")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.Navigation("ApplicationUser");
                 });
@@ -577,13 +540,13 @@ namespace Proiect_DAW.Data.Migrations
 
             modelBuilder.Entity("Proiect_DAW.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("ApplicationUserGroups");
+
                     b.Navigation("Comments");
 
                     b.Navigation("FriendshipsReveived");
 
                     b.Navigation("FriendshipsSent");
-
-                    b.Navigation("MessageRecipients");
 
                     b.Navigation("Messages");
 
@@ -592,9 +555,11 @@ namespace Proiect_DAW.Data.Migrations
                     b.Navigation("Profile");
                 });
 
-            modelBuilder.Entity("Proiect_DAW.Models.Message", b =>
+            modelBuilder.Entity("Proiect_DAW.Models.Group", b =>
                 {
-                    b.Navigation("MessageRecipients");
+                    b.Navigation("ApplicationUserGroups");
+
+                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("Proiect_DAW.Models.Post", b =>

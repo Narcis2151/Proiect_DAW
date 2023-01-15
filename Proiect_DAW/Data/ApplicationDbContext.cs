@@ -14,6 +14,15 @@ namespace Proiect_DAW.Data
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<ApplicationUserGroup>().HasKey(sc => new { sc.ApplicationUserId, sc.GroupId });
+
+            modelBuilder.Entity<ApplicationUserGroup>()
+             .HasOne(ab => ab.ApplicationUser)
+             .WithMany(ab => ab.ApplicationUserGroups)
+             .HasForeignKey(ab => ab.ApplicationUserId);
+            modelBuilder.Entity<ApplicationUserGroup>()
+            .HasOne(ab => ab.Group)
+            .WithMany(ab => ab.ApplicationUserGroups)
+            .HasForeignKey(ab => ab.GroupId);
         }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Profile> Profiles { get; set; }
@@ -22,7 +31,6 @@ namespace Proiect_DAW.Data
         public DbSet<Group> Groups { get; set; }
         public DbSet<ApplicationUserGroup> ApplicationUserGroups { get; set; }
         public DbSet<Message> Messages { get; set; }
-        public DbSet<MessageRecipient> MessageRecipients { get; set; }
         public DbSet<Friendship> Friendships { get; set; }
 
 

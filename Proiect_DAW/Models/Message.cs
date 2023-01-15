@@ -8,10 +8,10 @@ namespace Proiect_DAW.Models
         [Key]
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Message text is required!")]
         public string? Text { get; set; }
         public DateTime DateCreated { get; set; }
         public virtual ApplicationUser? Sender { get; set; }
-        [InverseProperty("Message")]
-        public virtual ICollection<MessageRecipient>? MessageRecipients { get; set; }
+        public virtual Group? Group { get; set; }
     }
 }
